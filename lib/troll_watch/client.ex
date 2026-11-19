@@ -22,7 +22,7 @@ defmodule TrollWatch.Client do
     Logger.info("Querying bridge statuses...")
 
     :get
-    |> Finch.build("https://seaway-greatlakes.com/bridgestatus/detailsnai?key=BridgeSCT")
+    |> Finch.build(seaway_bridge_status_url())
     |> Finch.request(TrollWatch.Finch)
   end
 
@@ -43,5 +43,13 @@ defmodule TrollWatch.Client do
     |> Enum.reduce(%{}, fn [bridge, status], acc ->
       Map.put(acc, String.trim(bridge), String.trim(status))
     end)
+  end
+
+  defp seaway_bridge_status_url do
+    "https://seaway-greatlakes.com/bridgestatus/detailsnai?key=" <> region()
+  end
+
+  defp region do
+    "Bridge" <> Application.get_env(:troll_watch, :region)
   end
 end
