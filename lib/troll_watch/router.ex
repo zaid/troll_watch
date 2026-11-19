@@ -18,6 +18,8 @@ defmodule TrollWatch.Router do
   end
 
   def start_link(opts \\ []) do
-    {:ok, _pid} = Bandit.start_link(Keyword.merge(opts, plug: __MODULE__))
+    port = Application.get_env(:troll_watch, :port)
+
+    {:ok, _pid} = Bandit.start_link(Keyword.merge(opts, plug: __MODULE__, port: port))
   end
 end
