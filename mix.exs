@@ -26,7 +26,7 @@ defmodule TrollWatch.MixProject do
       {:cors_plug, "~> 3.0.3"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
-      {:finch, "~> 0.25.0"},
+      {:req, "~> 0.5.0"},
       {:floki, "~> 0.38.0"},
       {:jason, "~> 1.4.5"},
       {:plug, "~> 1.20.4"}

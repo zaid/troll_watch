@@ -17,13 +17,11 @@ defmodule TrollWatch.Client do
 
   # Private functions
 
-  @spec fetch() :: {:ok, Finch.Response.t()} | {:error, Finch.error()}
+  @spec fetch() :: {:ok, Req.Response.t()} | {:error, Exception.t()}
   defp fetch do
     Logger.info("Querying bridge statuses...")
 
-    :get
-    |> Finch.build(seaway_bridge_status_url())
-    |> Finch.request(TrollWatch.Finch)
+    Req.get(seaway_bridge_status_url())
   end
 
   @spec extract(response_body :: binary()) :: {:ok, elements :: list()} | {:error, any()}
