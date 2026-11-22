@@ -11,7 +11,7 @@ defmodule TrollWatch.Poller do
 
   @default_polling_interval 60_000
 
-  def start_link(opts \\ []) do
+  def start_link(opts) do
     GenServer.start_link(__MODULE__, opts, name: __MODULE__)
   end
 

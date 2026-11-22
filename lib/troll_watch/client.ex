@@ -9,7 +9,7 @@ defmodule TrollWatch.Client do
 
   @spec get_bridge_statuses() :: map()
   def get_bridge_statuses do
-    with {:ok, %{body: body}} <- fetch(),
+    with {:ok, %{status: 200, body: body}} <- fetch(),
          {:ok, document} <- extract(body) do
       transform(document)
     end
@@ -21,7 +21,17 @@ defmodule TrollWatch.Client do
   defp fetch do
     Logger.info("Querying bridge statuses...")
 
-    Req.get(seaway_bridge_status_url())
+    [
+      base_url: seaway_bridge_status_url(),
+      params: [key: region()]
+    ]
+    |> Keyword.merge(req_client_options())
+    |> Req.request()
+    |> case do
+      {:ok, %Req.Response{status: 200} = resp} -> {:ok, resp}
+      {:ok, %Req.Response{} = resp} -> {:error, resp}
+      {_status, error} -> {:error, error}
+    end
   end
 
   @spec extract(response_body :: binary()) :: {:ok, elements :: list()} | {:error, any()}
@@ -44,10 +54,21 @@ defmodule TrollWatch.Client do
   end
 
   defp seaway_bridge_status_url do
-    "https://seaway-greatlakes.com/bridgestatus/detailsnai?key=" <> region()
+    "https://seaway-greatlakes.com/bridgestatus/detailsnai"
   end
 
   defp region do
-    "Bridge" <> Application.get_env(:troll_watch, :region)
+    region_abbreviation =
+      :troll_watch
+      |> Application.get_env(:client)
+      |> Keyword.get(:region)
+
+    "Bridge" <> region_abbreviation
+  end
+
+  defp req_client_options do
+    :troll_watch
+    |> Application.get_env(:client)
+    |> Keyword.take([:auth, :plug, :retry])
   end
 end
