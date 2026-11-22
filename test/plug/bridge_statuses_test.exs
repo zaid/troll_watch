@@ -6,7 +6,7 @@ defmodule TrollWatch.Plug.BridgeStatusesTest do
   alias TrollWatch.Cache
 
   @opts TrollWatch.Router.init([])
-  @valid_auth_token  Application.compile_env!(:troll_watch, :auth_token)
+  @valid_auth_token Application.compile_env!(:troll_watch, :auth_token)
   @invalid_auth_token @valid_auth_token <> "-invalid"
 
   describe "invalid auth tokens" do
@@ -22,7 +22,7 @@ defmodule TrollWatch.Plug.BridgeStatusesTest do
     test "returns 401 when called with invalid auth_token" do
       conn =
         :get
-        |> conn("/api/statuses", [auth_token: @invalid_auth_token])
+        |> conn("/api/statuses", auth_token: @invalid_auth_token)
         |> TrollWatch.Router.call(@opts)
 
       assert conn.status == 401
