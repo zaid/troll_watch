@@ -8,7 +8,7 @@ defmodule TrollWatch.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: TrollWatch.Supervisor]
-    Supervisor.start_link(children_for_env(Mix.env()), opts)
+    Supervisor.start_link(children_for_env(get_env()), opts)
   end
 
   # Private functions
@@ -20,5 +20,9 @@ defmodule TrollWatch.Application do
       TrollWatch.Poller,
       TrollWatch.Router
     ]
+  end
+
+  defp get_env do
+    Application.get_env(:troll_watch, :env)
   end
 end
