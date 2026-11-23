@@ -18,11 +18,15 @@ defmodule TrollWatch.Application do
     [
       TrollWatch.Cache,
       TrollWatch.Poller,
-      TrollWatch.Router
+      {Bandit, [plug: TrollWatch.Router, port: bandit_port()]}
     ]
   end
 
   defp get_env do
     Application.get_env(:troll_watch, :env)
+  end
+
+  defp bandit_port do
+    Application.get_env(:troll_watch, :port)
   end
 end

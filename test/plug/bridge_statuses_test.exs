@@ -9,6 +9,10 @@ defmodule TrollWatch.Plug.BridgeStatusesTest do
   @valid_auth_token Application.compile_env!(:troll_watch, :auth_token)
   @invalid_auth_token @valid_auth_token <> "-invalid"
 
+  test "init() returns its opts as-is" do
+    assert [foo: :bar] == TrollWatch.Plug.BridgeStatuses.init(foo: :bar)
+  end
+
   describe "invalid auth tokens" do
     test "returns 401 when called with missing auth_token" do
       conn =

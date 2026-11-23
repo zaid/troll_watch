@@ -4,6 +4,8 @@ defmodule TrollWatch.Plug.BridgeStatuses do
   it to the caller.
   """
 
+  @behaviour Plug
+
   import Plug.Conn
 
   alias TrollWatch.Cache

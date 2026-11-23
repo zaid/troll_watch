@@ -4,6 +4,8 @@ defmodule TrollWatch.Plug.AuthTokenValidator do
   to make sure it is valid.
   """
 
+  @behaviour Plug
+
   import Plug.Conn
 
   def init(options), do: options
